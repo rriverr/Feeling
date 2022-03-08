@@ -7,8 +7,10 @@ import hashlib
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
-from pymongo import MongoClient
+import requests
+from bs4 import BeautifulSoup
 
+from pymongo import MongoClient
 client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta_plus_week4
 
@@ -36,19 +38,16 @@ def home():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+
+
 @app.route('/upload', methods=['POST'])
 def save_diary():
     ytburl_receive = request.form['ytburl_give']
-
     file = request.files["file_give"]
-
     extension = file.filename.split('.')[-1]
-
     today = datetime.now()
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-
     filename = f'file-{mytime}'
-
     save_to = f'static/img/{filename}.{extension}'
     file.save(save_to)
 
@@ -68,7 +67,7 @@ def login():
 def sighup():
     return render_template('index.html')
 
-@app.route('/sign_up/save', methods=['POST'])
+@app.route('/sign-up/save', methods=['POST'])
 def sign_up():
     userid_receive = request.form['userid_give']
     password_receive = request.form['password_give']
@@ -81,18 +80,17 @@ def sign_up():
     db.feelingusers.insert_one(doc)
     return render_template('index.html')
 
-@app.route('/sign_up/check_dup', methods=['POST'])
+@app.route('/sign-up/check_dup', methods=['POST'])
 def check_dup():
     userid_receive = request.form['userid_give']
     exists = bool(db.feelingusers.find_one({"userid": userid_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
 
-@app.route('/sign_in', methods=['POST'])
+@app.route('/sign-in', methods=['POST'])
 def sign_in():
     userid_receive = request.form['userid_give']
     password_receive = request.form['password_give']
-
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     result = db.feelingusers.find_one({'userid': userid_receive, 'password': pw_hash})
 
@@ -129,18 +127,13 @@ def posting():
         user_info = db.feelingusers.find_one({"userid": payload["id"]})
         ytburl_receive = request.form["ytburl_give"]
         date_receive = request.form["date_give"]
-
         file = request.files["file_give"]
-
         today = datetime.now()
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-
         extension = file.filename.split('.')[-1]
-
         filename = f'file-{mytime}'
         save_to = f'static/{filename}.{extension}'
         file.save(save_to)
-
         doc = {
             "userid": user_info["userid"],
             "profile_name": user_info["profile_name"],
@@ -155,7 +148,7 @@ def posting():
 
 
 
-@app.route("/get_posts", methods=['GET'])
+@app.route("/get-posts", methods=['GET'])
 def get_posts():
     token_receive = request.cookies.get('mytoken')
     try:
@@ -171,7 +164,7 @@ def get_posts():
         return redirect(url_for("home"))
 
 
-@app.route('/update_like', methods=['POST'])
+@app.route('/update-like', methods=['POST'])
 def update_like():
     token_receive = request.cookies.get('mytoken')
     try:
