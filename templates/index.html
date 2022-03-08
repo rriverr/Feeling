@@ -184,6 +184,7 @@
 <body>
 
 <button id="login-popup-btn">로그인</button>
+<button id="btn-modal">올리기</button>
 
 
 <div class="wrap">
@@ -220,7 +221,25 @@
     </div>
 </div>
 
+<div id="modal-upload" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title01">
+            <h2>글작성</h2>
+        </div>
+        <div class="upload">
+            <div class="imput">
+                <p class="title02">YOUTUBE URL</p><input class="inputurl" type="text" id="ytburl">
+                <img class="setimg"
+                     src="/static/noimg.jpg"
+                     id="img_section">
+                <br>
+                <input type="file" id="upload_file" accept="image/*" required=true value="업로드">
+                <button onclick="posting()" class=uploadbtn id="upbtn">올리기</button>
+            </div>
 
+        </div>
+    </div>
+</div>
 
 <script>
     const body = document.querySelector('body');
@@ -244,6 +263,62 @@
             }
         }
     });
+
+    function posting() {
+        let ytbrul = $('#ytburl').val()
+
+        let file = $('#upload_file')[0].files[0]
+        let form_data = new FormData()
+
+        form_data.append("file_give", file)
+        form_data.append("ytburl_give", ytbrul)
+
+        $.ajax({
+            type: "POST",
+            url: "/upload",
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: window.location.reload()
+        });
+    }
+
+    const modal1 = document.getElementById("modal-upload")
+    const btnModal = document.getElementById("btn-modal")
+    btnModal.addEventListener("click", () => {
+        modal1.style.display = "flex"
+        //btn-modal의 버튼을 클릭시 display값을 flex로 변환
+    })
+
+    modal1.addEventListener("click", e => {
+        const evTarget = e.target
+        if (evTarget.classList.contains("modal-overlay")) {
+            modal1.style.display = "none"
+            //modal창 외를 타켓(클릭)시 display 값을 none으로 변환
+        }
+    })
+
+    window.addEventListener("keyup", e => {
+        if (modal1.style.display === "flex" && e.key === "Escape") {
+            modal1.style.display = "none"
+            //modal display가 flex고 키보드 입력값이 esc일때 modal display를 none으로 변환
+        }
+    })
+
+    const reader = new FileReader();
+    reader.onload = (readerEvent) => {
+        document.querySelector("#img_section").setAttribute("src", readerEvent.target.result);
+        //파일을 읽는 이벤트가 발생하면 img_section의 src 속성을 readerEvent의 결과물로 대체함
+    };
+
+    document.querySelector("#upload_file").addEventListener("change", (changeEvent) => {
+        //upload_file 에 이벤트리스너를 장착
+
+        const imgFile = changeEvent.target.files[0];
+        reader.readAsDataURL(imgFile);
+        //업로드한 이미지의 URL을 reader에 등록
+    })
 </script>
 
 

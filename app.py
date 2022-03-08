@@ -16,7 +16,6 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta_plus_week4
 
-
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
@@ -29,6 +28,28 @@ def home():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/upload', methods=['POST'])
+def save_diary():
+    ytburl_receive = request.form['ytburl_give']
+
+    file = request.files["file_give"]
+
+    extension = file.filename.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+
+    filename = f'file-{mytime}'
+
+    save_to = f'static/img/{filename}.{extension}'
+    file.save(save_to)
+
+    doc ={
+        'ytburl':ytburl_receive,
+        'img':f'{filename}.{extension}',
+    }
+    db.upload.insert_one(doc)
+    return jsonify({'msg': '저장 완료!'})
 
 @app.route('/login')
 def login():
@@ -78,6 +99,8 @@ def sign_in():
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
+
+
 @app.route('/user/<userid>')
 def user(userid):
     token_receive = request.cookies.get('mytoken')
@@ -89,6 +112,7 @@ def user(userid):
         return render_template('user.html', user_info=user_info, status=status)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
 
 
 if __name__ == '__main__':
