@@ -126,9 +126,10 @@ input[id="menuicon"]:checked + ul + div {
     border: 1px solid rgba(255, 255, 255, 0.18);
     width: 400px;
     height: 500px;
-    position: relative;
+    position: fixed;
     top: -100px;
     padding: 10px;
+    margin-top: 176px;
 }
 #modal-upload .title01 {
     font-family: 'Noto Sans KR', sans-serif;
