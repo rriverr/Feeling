@@ -7,8 +7,6 @@ import hashlib
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
-import requests
-from bs4 import BeautifulSoup
 
 from pymongo import MongoClient
 client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
