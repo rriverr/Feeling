@@ -92,8 +92,6 @@ def check_dup():
 
 @app.route('/sign-in', methods=['POST'])
 def sign_in():
-
-
     userid_receive = request.form['userid_give']
     password_receive = request.form['password_give']
 
