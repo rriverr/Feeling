@@ -5,6 +5,10 @@
 
 
 
+body{
+    color: #333333;
+    background-color: #333333;
+}
 
 input[id="menuicon"] {
     display: none;
@@ -170,8 +174,10 @@ input[id="menuicon"]:checked + ul + div {
     margin-top: 10px;
 }
 
-.bb {
-    margin-top: -400px;
+
+.title{
+    background-image: url("/static/sky.jpeg");
+
 }
 
 .h1 {
@@ -186,7 +192,7 @@ input[id="menuicon"]:checked + ul + div {
 
 .fel {
     margin-left: 240px;
-    color: white;
+    color: purple;
 
     font-family: 'Titan One', cursive;
 }
@@ -479,15 +485,9 @@ body {
     padding: 10px;
 }
 
-#modal-upload .title {
-    padding-left: 10px;
-    display: inline;
-    color: black;
-
-}
-
 #modal-upload .title01 {
     font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.2em;
     display: inline;
 }
 

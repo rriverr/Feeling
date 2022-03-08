@@ -62,7 +62,7 @@ def save_diary():
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
-    return render_template('login.html', msg=msg)
+    return render_template('index.html', msg=msg)
 
 @app.route('/signup')
 def sighup():
