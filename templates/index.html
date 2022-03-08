@@ -13,17 +13,22 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"/>
-
-
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet"/>
 
 
     <title>Feeling</title>
     <script>
+        $(document).ready(function () {
+            listing();
+        });
+
+
         // 로그인
         function sign_in() {
             let userid = $("#li-id-input").val()
@@ -177,6 +182,53 @@
             });
         }
 
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/upload",
+                data: {},
+                success: function (response) {
+                    let rows = response["upload"];
+                    for (let i = 0; i < rows.length; i++) {
+                        let file = rows[i]["file"];
+                        let title = rows[i]["ytburl"];
+                        let temp_html = ` <div class="col">
+                                            <div class="card h-100">
+                                                <img src="${file}"
+                                                     class="card-img-top" alt="...">
+                                                <div class="card-footer">
+                                                    <small class="text-muted">${title}</small>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                        $("#list_box").append(temp_html);
+                    }
+                },
+            });
+        }
+
+
+        function posting() {
+            let ytbrul = $('#ytburl').val()
+
+            let file = $('#upload_file')[0].files[0]
+            let form_data = new FormData()
+
+            form_data.append("file_give", file)
+            form_data.append("ytburl_give", ytbrul)
+
+            $.ajax({
+                type: "POST",
+                url: "/upload",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: window.location.reload()
+            });
+        }
+
     </script>
 
 </head>
@@ -225,80 +277,7 @@
 </div>
 
 <div class="warp">
-    <div class="row row-cols-1 row-cols-md-4 g-4">
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Y0fpGPzf_voHgSOKOBbd2xE8nFstBmWBBQ&usqp=CAU"
-                     class="
-                     card-img-top" alt="...">
-                <div class="card-body">
-
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">노래제목</small>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Y0fpGPzf_voHgSOKOBbd2xE8nFstBmWBBQ&usqp=CAU"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">노래제목</small>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Y0fpGPzf_voHgSOKOBbd2xE8nFstBmWBBQ&usqp=CAU"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">노래제목</small>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Y0fpGPzf_voHgSOKOBbd2xE8nFstBmWBBQ&usqp=CAU"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">노래제목</small>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Y0fpGPzf_voHgSOKOBbd2xE8nFstBmWBBQ&usqp=CAU"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">노래제목</small>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Y0fpGPzf_voHgSOKOBbd2xE8nFstBmWBBQ&usqp=CAU"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">노래제목</small>
-                </div>
-            </div>
-        </div>
+    <div id="card-box" class="row row-cols-1 row-cols-md-4 g-4">
     </div>
 </div>
 
@@ -357,6 +336,7 @@
 </div>
 
 <script>
+
     const body = document.querySelector('body');
     const modal = document.querySelector('.wrap');
     const btnOpenPopup = document.querySelector('#login-popup-btn');
@@ -379,25 +359,6 @@
         }
     });
 
-    function posting() {
-        let ytbrul = $('#ytburl').val()
-
-        let file = $('#upload_file')[0].files[0]
-        let form_data = new FormData()
-
-        form_data.append("file_give", file)
-        form_data.append("ytburl_give", ytbrul)
-
-        $.ajax({
-            type: "POST",
-            url: "/upload",
-            data: form_data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: window.location.reload()
-        });
-    }
 
     const modal1 = document.getElementById("modal-upload")
     const btnModal = document.getElementById("btn-modal")
