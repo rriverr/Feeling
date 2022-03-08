@@ -80,7 +80,7 @@ def sign_up():
     db.feelingusers.insert_one(doc)
     return render_template('index.html')
 
-@app.route('/sign-up/check_dup', methods=['POST'])
+@app.route('/sign-up/check-dup', methods=['POST'])
 def check_dup():
     userid_receive = request.form['userid_give']
     exists = bool(db.feelingusers.find_one({"userid": userid_receive}))
