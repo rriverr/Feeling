@@ -1,28 +1,21 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-
-from datetime import datetime
-import datetime
-import jwt
-import hashlib
-from werkzeug.utils import secure_filename
-from datetime import datetime, timedelta
-
-from pymongo import MongoClient
-
-client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
-db = client.dbsparta_plus_week4
-
-SECRET_KEY = 'SPARTA'
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 
 app = Flask(__name__)
+import jwt
+import hashlib
+import datetime
+from datetime import datetime, timedelta
+from pymongo import MongoClient
 
+app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
+client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
+db = client.dbsparta_plus_week4
 
-##  HTML ##
 
 @app.route('/')
 def home():
@@ -35,6 +28,7 @@ def home():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 @app.route('/upload', methods=['POST'])
 def save_diary():
@@ -59,14 +53,19 @@ def save_diary():
     db.upload.insert_one(doc)
     return jsonify({'msg': '저장 완료!'})
 
+
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
-    return render_template('login.html', msg=msg)
+    return render_template('index.html', msg=msg)
 
-@app.route('/signup')
-def sighup():
-    return render_template('index.html')
+
+@app.route('/sign_up/check_dup', methods=['POST'])
+def check_dup():
+    userid_receive = request.form['userid_give']
+    exists = bool(db.feelingusers.find_one({"userid": userid_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
+
 
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
@@ -74,18 +73,12 @@ def sign_up():
     password_receive = request.form['password_give']
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     doc = {
-        "userid": userid_receive,  # 아이디
-        "password": password_hash,  # 비밀번호
-        "profile_name": userid_receive,  # 프로필 이름 기본값은 아이디
+        "userid": userid_receive,
+        "password": password_hash,
+        "profile_name": userid_receive
     }
     db.feelingusers.insert_one(doc)
-    return render_template('index.html')
-
-@app.route('/sign_up/check_dup', methods=['POST'])
-def check_dup():
-    userid_receive = request.form['userid_give']
-    exists = bool(db.feelingusers.find_one({"userid": userid_receive}))
-    return jsonify({'result': 'success', 'exists': exists})
+    return jsonify({'result': 'success'})
 
 
 @app.route('/sign_in', methods=['POST'])
@@ -108,6 +101,7 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+
 @app.route('/user/<userid>')
 def user(userid):
     token_receive = request.cookies.get('mytoken')
@@ -126,7 +120,7 @@ def posting():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.feelingusers.find_one({"userid": payload["id"]})
+        user_info = db.users.find_one({"userid": payload["id"]})
         ytburl_receive = request.form["ytburl_give"]
         date_receive = request.form["date_give"]
 
@@ -154,7 +148,6 @@ def posting():
         return redirect(url_for("home"))
 
 
-
 @app.route("/get_posts", methods=['GET'])
 def get_posts():
     token_receive = request.cookies.get('mytoken')
@@ -176,7 +169,7 @@ def update_like():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.feelingusers.find_one({"userid": payload["id"]})
+        user_info = db.users.find_one({"userid": payload["id"]})
         post_id_receive = request.form["post_id_give"]
         type_receive = request.form["type_give"]
         action_receive = request.form["action_give"]
