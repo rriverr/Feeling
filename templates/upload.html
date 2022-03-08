@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+    <!-- 폰트 Regular 400-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<style>
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    #modal.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    #modal .modal-window {
+        background: white;
+        box-shadow: 0 8px 32px 0 gray;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        width: 400px;
+        height: 500px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+
+    #modal .title {
+        padding-left: 10px;
+        display: inline;
+        color: black;
+
+    }
+
+    #modal .title h2 {
+        display: inline;
+    }
+
+    #modal .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: black;
+    }
+
+    #modal {
+        margin-top: 20px;
+        padding: 0px 10px;
+        color: black;
+    }
+
+    input {
+        display: flex;
+        position: center;
+        margin: auto;
+        width: 350px;
+        margin-bottom: 15px;
+    }
+
+    .setimg {
+        display: flex;
+        margin: auto;
+        width: 370px;
+        height: 300px;
+    }
+
+    p {
+        display: inline;
+        margin-left: 23px;
+    }
+
+    .uploadbtn {
+        display: block;
+        width: 200px;
+        padding-right: 10px;
+        margin: 20px auto auto;
+    }
+</style>
+</head>
+<body>
+<button class="e" id="btn-modal">rrrr</button>
+
+<div id="modal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>글작성</h2>
+        </div>
+        <div class="close-area">X</div>
+        <div class="upload">
+            <div class="imput">
+                <p>YOUTUBE URL</p><input class="inputurl" type="text" id="ytburl">
+                <img class="setimg"
+                     src="/static/noimg.jpg"
+                     id="img_section">
+                <br>
+                <input type="file" id="upload_file" accept="image/*" required=true value="업로드">
+                <button onclick="posting()" class=uploadbtn id="upbtn">올리기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    $.ajax({
+        type: "GET",
+        url: "/diary?sample_give=샘플데이터",
+        data: {},
+        success: function (response) {
+            alert(response['msg'])
+        }
+    })
+
+    function posting() {
+        let ytbrul = $('#ytburl').val()
+
+        let file = $('#upload_file')[0].files[0]
+        let form_data = new FormData()
+
+        form_data.append("file_give", file)
+        form_data.append("ytburl_give", ytbrul)
+
+        $.ajax({
+            type: "POST",
+            url: "/upload",
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: window.location.reload()
+        });
+    }
+
+    const modal = document.getElementById("modal")
+    const btnModal = document.getElementById("btn-modal")
+    btnModal.addEventListener("click", () => {
+        modal.style.display = "flex"
+        //btn-modal의 버튼을 클릭시 display값을 flex로 변환
+    })
+
+    const closeBtn = modal.querySelector(".close-area")
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none"
+        //modal창에서 close-area 영역 클릭시 display 값을 none으로 변환
+    })
+
+    modal.addEventListener("click", e => {
+        const evTarget = e.target
+        if (evTarget.classList.contains("modal-overlay")) {
+            modal.style.display = "none"
+            //modal창 외를 타켓(클릭)시 display 값을 none으로 변환
+        }
+    })
+
+    window.addEventListener("keyup", e => {
+        if (modal.style.display === "flex" && e.key === "Escape") {
+            modal.style.display = "none"
+            //modal display가 flex고 키보드 입력값이 esc일때 modal display를 none으로 변환
+        }
+    })
+
+    const reader = new FileReader();
+    reader.onload = (readerEvent) => {
+        document.querySelector("#img_section").setAttribute("src", readerEvent.target.result);
+        //파일을 읽는 이벤트가 발생하면 img_section의 src 속성을 readerEvent의 결과물로 대체함
+    };
+
+    document.querySelector("#upload_file").addEventListener("change", (changeEvent) => {
+        //upload_file 에 이벤트리스너를 장착
+
+        const imgFile = changeEvent.target.files[0];
+        reader.readAsDataURL(imgFile);
+        //업로드한 이미지의 URL을 reader에 등록
+    })
+</script>
+</body>
+</html>
