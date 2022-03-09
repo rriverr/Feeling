@@ -517,7 +517,7 @@ input[id="menuicon"]:checked + ul + div {
     display: block;
     width: 200px;
     padding: 1px 6px 1px 6px;
-    margin: 20px auto auto;
+    margin: 10px auto auto;
     background-color: #688BDF;
     color: white;
     border: none;

@@ -137,7 +137,7 @@ def posting():
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
         extension = file.filename.split('.')[-1]
         filename = f'file-{mytime}'
-        save_to = f'static/{filename}.{extension}'
+        save_to = f'static/img/{filename}.{extension}'
         file.save(save_to)
         doc = {
             "userid": user_info["userid"],
