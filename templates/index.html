@@ -22,8 +22,7 @@
             listing();
         });
 
-        function listing()
-        {
+        function listing() {
             $.ajax({
                 type: "GET",
                 url: "/upload",
@@ -35,7 +34,7 @@
                         let profile_name = rows[i]["profile_name"];
                         let ytburl = rows[i]["ytburl"];
                         let file = rows[i]["file"];
-                        let temp_html = `<div className="col">
+                        let temp_html = `<div id="card" className="col">
                                             <div className="card h-100">
                                                 <img src="static/img/${file}"
                                                      class="card-img-top" alt="...">
@@ -53,8 +52,7 @@
             });
         }
 
-        function posting()
-        {
+        function posting() {
             let ytbrul = $('#ytburl').val()
             let file = $('#upload_file')[0].files[0]
             let form_data = new FormData()
@@ -79,8 +77,7 @@
         }
 
 
-        function logout()
-        {
+        function logout() {
             $.removeCookie('mytoken', {path: '/'});
             window.location.href = '/';
         }
@@ -88,43 +85,31 @@
     </script>
 </head>
 <body>
-<nav class="nav1">
-    <div class="container-fluid">
-        <a href="http://211.111.21.123:5000/" onclick="window.location.reload()">
-            <img src="../static/logo.png" width="110"/>
-        </a>
+<nav class="navbar">
+    <div class="nav-btn-box">
     </div>
 </nav>
-<div class="main">
-    <h1 class="onul" style="font-family: 'Single Day', cursive;">기분을 음악으로</h1>
-    <h1 class="fel" style="font-size: 100px;">Feeling</h1>
-</div>
-<div class="gi">
-    <h1 class="today">오늘의 기분은?(멘트 추천 받아요 ㅠㅠ)</h1>
-    <h1 class="people" style="font-size: 50px;">사람들의 기분들(좋은 멘트 추천해주세요 ㅠㅠ)</h1>
-</div>
-<hr style="width: 85%; margin-left: 110px; margin-top: 50px;" class="sun">
-<div>
-    <button id="btn-modal" type="button" class="btn btn-info"
-            style="margin-left: 1260px; margin-top:10px; border-radius: 20px; color: white;">POST!!
-    </button>
-</div>
-<input type="checkbox" id="menuicon">
-<ul>
-    <li>
-        <label for="menuicon">
-            <span></span><span></span><span></span>
-        </label>
-    </li>
-</ul>
-<div class="sidebar">
-    <button id="logout-btn" class="menu_btn" onclick="logout()">로그아웃</button>
-</div>
-<div class="warp">
-    <div id="card-box" class="row row-cols-1 row-cols-md-4 g-4">
+<div class="wrap">
+    <div class="bg-box">
+        <div class="body-logo-box">
+            <img id="logo" src="static/logo.png">
+        </div>
+        <div class="btn-box">
+            <div class="wt-btn-box">
+                <button id="btn-modal" class="body-btn">작성하기</button>
+            </div>
+            <div class="lo-btn-box">
+                <button id="logout-btn" class="body-btn" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </div>
+    <!--cardbox-->
+    <div class="card-wrap">
+        <div id="card-box" class="row row-cols-1 row-cols-md-4 g-4">
+        </div>
     </div>
 </div>
-
+<!--postingbox-->
 <div id="modal-upload" class="modal-overlay">
     <div class="modal-window">
         <div>

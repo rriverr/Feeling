@@ -130,7 +130,7 @@ def posting():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
     except (KeyError):
-        return jsonify({"msg": "파일 없음"})
+        return jsonify({'msg': '파일 없음'})
 
 @app.route('/upload', methods=['GET'])
 def post_get():
