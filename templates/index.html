@@ -21,145 +21,7 @@
         $(document).ready(function () {
             listing();
         });
-        // 로그인
-        function sign_in() {
-            let userid = $("#li-id-input").val()
-            let password = $("#li-pw-input").val()
-            if (userid == "") {
-                $("#help-id-login").text("아이디를 입력해주세요.")
-                $("#li-id-input").focus()
-                return;
-            } else {
-                $("#help-id-login").text("")
-            }
-            if (password == "") {
-                $("#help-password-login").text("비밀번호를 입력해주세요.")
-                $("#li-pw-input").focus()
-                return;
-            } else {
-                $("#help-password-login").text("")
-            }
-            $.ajax({
-                type: "POST",
-                url: "/sign_in",
-                data: {
-                    userid_give: userid,
-                    password_give: password
-                },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        $.cookie('mytoken', response['token'], {path: '/'});
-                        window.location.replace("/")
-                        console.log(userid)
-                    } else {
-                        alert(response['msg'])
-                    }
-                }
-            });
-        }
-        // 회원가입
-        function sign_up() {
-            let userid = $("#su-id-input").val()
-            let password = $("#li-pw-input").val()
-            let password2 = $("#su-pw-input").val()
-            console.log(userid, password, password2)
-            if ($("#help-id").hasClass("is-danger")) {
-                alert("아이디를 다시 확인해주세요.")
-                return;
-            } else if (!$("#help-id").hasClass("is-success")) {
-                alert("아이디 중복확인을 해주세요.")
-                return;
-            }
-            if (password == "") {
-                $("#help-password").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
-                $("#li-pw-input").focus()
-                return;
-            } else if (!is_password(password)) {
-                $("#help-password").text("8-20자 이내의 영문과 숫자, 특수문자로 입력해주세요.").removeClass("is-safe").addClass("is-danger")
-                $("#li-pw-input").focus()
-                return
-            } else {
-                $("#help-password").text("사용할 수 있는 비밀번호입니다.").removeClass("is-danger").addClass("is-success")
-            }
-            if (password2 == "") {
-                $("#help-password2").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
-                $("#su-pw-input").focus()
-                return;
-            } else if (password2 != password) {
-                $("#help-password2").text("비밀번호가 일치하지 않습니다.").removeClass("is-safe").addClass("is-danger")
-                $("#su-pw-input").focus()
-                return;
-            } else {
-                $("#help-password2").text("비밀번호가 일치합니다.").removeClass("is-danger").addClass("is-success")
-            }
-            $.ajax({
-                type: "POST",
-                url: "/sign_up/save",
-                data: {
-                    userid_give: userid,
-                    password_give: password
-                },
-                success: function (response) {
-                    alert("회원가입을 축하드립니다!")
-                    window.location.replace("/")
-                }
-            });
-        }
-        function toggle_sign_up() {
-            $("#li-logo").toggleClass("is-hidden")
-            $("#li-text").toggleClass("is-hidden")
-            $("#su-text").toggleClass("is-hidden")
-            $("#sign-up-box").toggleClass("is-hidden")
-            $("#div-sign-in-or-up").toggleClass("is-hidden")
-            $("#li-id-input").toggleClass("is-hidden")
-            $("#su-id-input").toggleClass("is-hidden")
-            $("#su-un-input").toggleClass("is-hidden")
-            $("#btn-check-dup").toggleClass("is-hidden")
-            $("#help-id").toggleClass("is-hidden")
-            $("#help-password").toggleClass("is-hidden")
-            $("#help-password2").toggleClass("is-hidden")
-        }
-        // 정규표현식
-        function is_userid(asValue) {
-            var regExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9]{2,10}$/;
-            return regExp.test(asValue);
-        }
-        function is_password(asValue) {
-            var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
-            return regExp.test(asValue);
-        }
-        // 중복확인
-        function check_dup() {
-            let userid = $("#su-id-input").val()
-            console.log(userid)
-            if (userid == "") {
-                $("#help-id").text("* 아이디를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
-                $("#su-id-input").focus()
-                return;
-            }
-            if (!is_userid(userid)) {
-                $("#help-id").text("* 2-10자의 영문과 숫자로 입력해주세요.").removeClass("is-safe").addClass("is-danger")
-                $("#su-id-input").focus()
-                return;
-            }
-            $("#help-id").addClass("is-loading")
-            $.ajax({
-                type: "POST",
-                url: "/sign_up/check_dup",
-                data: {
-                    userid_give: userid
-                },
-                success: function (response) {
-                    if (response["exists"]) {
-                        $("#help-id").text("이미 존재하는 아이디입니다.").removeClass("is-safe").addClass("is-danger")
-                        $("#su-id-input").focus()
-                    } else {
-                        $("#help-id").text("사용할 수 있는 아이디입니다.").removeClass("is-danger").addClass("is-success")
-                    }
-                    $("#help-id").removeClass("is-loading")
-                }
-            });
-        }
+
         function listing() {
             $.ajax({
                 type: "GET",
@@ -184,6 +46,7 @@
                 },
             });
         }
+
         function posting() {
             let ytbrul = $('#ytburl').val()
             let file = $('#upload_file')[0].files[0]
@@ -200,6 +63,13 @@
                 success: window.location.reload()
             });
         }
+
+
+        function logout() {
+            $.removeCookie('mytoken', {path: '/'});
+            window.location.href = '/';
+        }
+
     </script>
 </head>
 <body>
@@ -215,12 +85,14 @@
     <h1 class="fel" style="font-size: 100px;">Feeling</h1>
 </div>
 <div class="gi">
-  <h1 class="today">오늘의 기분은?(멘트 추천 받아요 ㅠㅠ)</h1>
-  <h1 class="people"style="font-size: 50px;">사람들의 기분들(좋은 멘트 추천해주세요 ㅠㅠ)</h1>
+    <h1 class="today">오늘의 기분은?(멘트 추천 받아요 ㅠㅠ)</h1>
+    <h1 class="people" style="font-size: 50px;">사람들의 기분들(좋은 멘트 추천해주세요 ㅠㅠ)</h1>
 </div>
 <hr style="width: 85%; margin-left: 110px; margin-top: 50px;" class="sun">
 <div>
-  <button id="btn-modal" type="button" class="btn btn-info" style="margin-left: 1260px; margin-top:10px; border-radius: 20px; color: white;">POST!!</button>
+    <button id="btn-modal" type="button" class="btn btn-info"
+            style="margin-left: 1260px; margin-top:10px; border-radius: 20px; color: white;">POST!!
+    </button>
 </div>
 <input type="checkbox" id="menuicon">
 <ul>
@@ -231,46 +103,13 @@
     </li>
 </ul>
 <div class="sidebar">
-    <button id="login-popup-btn" class="menu_btn">로그인</button>
-    <!--    <button class="menu_btn2">회원가입</button>-->
+        <button id="logout-btn" class="menu_btn" onclick="logout()">로그아웃</button>
 </div>
 <div class="warp">
     <div id="card-box" class="row row-cols-1 row-cols-md-4 g-4">
     </div>
 </div>
-<div class="wrap">
-    <div id="modal">
-        <img id="li-logo" src="static/logo.png">
-        <p id="li-text">로그인</p>
-        <p id="su-text" class="is-hidden">회원가입</p>
-        <div id="login-box">
-            <div id="li-input-box" class="field has-addons">
-                <div class="control has-icons-left" style="width:100%">
-                    <input id="li-id-input" class="md-input" type="text" placeholder="아이디">
-                    <input id="su-id-input" class="md-input is-hidden" type="text" placeholder="아이디">
-                </div>
-                <div id="btn-check-dup" class="control is-hidden">
-                    <button class="md-btn checkdup-btn" onclick="check_dup()">중복확인</button>
-                </div>
-            </div>
-            <p id="help-id" class="alert is-hidden">2-10자의 영문과 숫자로 입력해주세요.</p>
-            <input id="li-pw-input" class="md-input login-input pw-input" type="password" placeholder="비밀번호">
-            <p id="help-password" class="alert is-hidden">8-20자 이내의 비밀번호를 설정해주세요.</p>
-        </div>
-        <div id="div-sign-in-or-up">
-            <button class="md-btn login-btn" onclick="sign_in()">로그인</button>
-            <div class="hrdiv"></div>
-            <h4 class="non-user">아직 회원이 아니라면</h4>
-            <button class="md-btn signup-btn" onclick="toggle_sign_up()"> 회원가입하기</button>
-        </div>
-        <div id="sign-up-box" class="signup-box is-hidden">
-            <input id="su-pw-input" class="md-input signup-input" type="password" placeholder="비밀번호">
-            <p id="help-password2" class="alert is-hidden">비밀번호를 다시 한 번 입력해주세요.</p>
-            <button id="signup-input" class="md-btn signup-btn-2" onclick="sign_up()">회원가입</button>
-            <button id="cancle-input" class="md-btn cancle-btn" onclick="toggle_sign_up()">취소</button>
-        </div>
-    </div>
-</div>
+
 <div id="modal-upload" class="modal-overlay">
     <div class="modal-window">
         <div>
@@ -290,23 +129,7 @@
     </div>
 </div>
 <script>
-    const body = document.querySelector('body');
-    const modal = document.querySelector('.wrap');
-    const btnOpenPopup = document.querySelector('#login-popup-btn');
-    btnOpenPopup.addEventListener('click', () => {
-        modal.classList.toggle('show');
-        if (modal.classList.contains('show')) {
-            body.style.overflow = 'hidden';
-        }
-    });
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.classList.toggle('show');
-            if (!modal.classList.contains('show')) {
-                body.style.overflow = 'auto';
-            }
-        }
-    });
+
     const modal1 = document.getElementById("modal-upload")
     const btnModal = document.getElementById("btn-modal")
     btnModal.addEventListener("click", () => {

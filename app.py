@@ -7,9 +7,8 @@ import hashlib
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
-
-
 from pymongo import MongoClient
+
 client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta_plus_week4
 
@@ -38,7 +37,6 @@ def home():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-
 @app.route('/upload', methods=['POST'])
 def save_diary():
     ytburl_receive = request.form['ytburl_give']
@@ -57,14 +55,17 @@ def save_diary():
     db.upload.insert_one(doc)
     return jsonify({'msg': '저장 완료!'})
 
+
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
-    return render_template('index.html', msg=msg)
+    return render_template('login.html', msg=msg)
 
-@app.route('/signup')
-def sighup():
+
+@app.route('/sign-up')
+def sigh_up():
     return render_template('index.html')
+
 
 @app.route('/sign-up/save', methods=['POST'])
 def sign_up():
@@ -74,13 +75,16 @@ def sign_up():
     doc = {
         "userid": userid_receive,  # 아이디
         "password": password_hash,  # 비밀번호
-        "profile_name": userid_receive,  # 프로필 이름 기본값은 아이디
+        "profile_name": userid_receive  # 프로필 이름 기본값은 아이디
     }
     db.feelingusers.insert_one(doc)
-    return render_template('index.html')
+    return render_template('login.html')
 
-@app.route('/sign-up/check_dup', methods=['POST'])
+
+@app.route('/sign-up/check-dup', methods=['POST'])
 def check_dup():
+
+
     userid_receive = request.form['userid_give']
     exists = bool(db.feelingusers.find_one({"userid": userid_receive}))
     return jsonify({'result': 'success', 'exists': exists})
@@ -90,6 +94,7 @@ def check_dup():
 def sign_in():
     userid_receive = request.form['userid_give']
     password_receive = request.form['password_give']
+
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     result = db.feelingusers.find_one({'userid': userid_receive, 'password': pw_hash})
 
@@ -100,10 +105,11 @@ def sign_in():
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
-        return jsonify({'result': 'success', 'token': token, 'msg': 'id'})
-    # 찾지 못하면
+        return jsonify({'result': 'success', 'token': token, 'msg':'환영합니다!'})
+            # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
 
 @app.route('/user/<userid>')
 def user(userid):
@@ -144,7 +150,6 @@ def posting():
         return jsonify({"result": "success", 'msg': '포스팅 성공'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
 
 
 @app.route("/get-posts", methods=['GET'])
