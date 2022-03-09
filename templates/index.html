@@ -18,36 +18,43 @@
           rel="stylesheet"/>
     <title>Feeling</title>
     <script>
-        // $(document).ready(function () {
-        //     listing();
-        // });
+        $(document).ready(function () {
+            listing();
+        });
 
-        // function listing() {
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "/get-posts",
-        //         data: {},
-        //         success: function (response) {
-        //             let rows = response["upload"];
-        //             for (let i = 0; i < rows.length; i++) {
-        //                 let file = rows[i]["file"];
-        //                 let title = rows[i]["ytburl"];
-        //                 let temp_html = ` <div class="col">
-        //                                     <div class="card h-100">
-        //                                         <img src="${file}"
-        //                                              class="card-img-top" alt="...">
-        //                                         <div class="card-footer">
-        //                                             <small class="text-muted">${title}</small>
-        //                                         </div>
-        //                                     </div>
-        //                                 </div>`;
-        //                 $("#list_box").append(temp_html);
-        //             }
-        //         },
-        //     });
-        // }
+        function listing()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/upload",
+                data: {},
+                success: function (response) {
+                    let rows = response["posts"];
+                    for (let i = 0; i < rows.length; i++) {
+                        let userid = rows[i]["userid"];
+                        let profile_name = rows[i]["profile_name"];
+                        let ytburl = rows[i]["ytburl"];
+                        let file = rows[i]["file"];
+                        let temp_html = `<div className="col">
+                                            <div className="card h-100">
+                                                <img src="static/img/${file}"
+                                                     class="card-img-top" alt="...">
+                                                    <div class="card-footer">
+                                                        <a href="${ytburl}">
+                                                            <small class="text-muted">${ytburl}</small>
+                                                        </a>
+                                                    </div>
+                                            </div>
+                                        </div>`;
 
-        function posting() {
+                        $("#card-box").append(temp_html);
+                    }
+                },
+            });
+        }
+
+        function posting()
+        {
             let ytbrul = $('#ytburl').val()
             let file = $('#upload_file')[0].files[0]
             let form_data = new FormData()
@@ -65,7 +72,8 @@
         }
 
 
-        function logout() {
+        function logout()
+        {
             $.removeCookie('mytoken', {path: '/'});
             window.location.href = '/';
         }
@@ -103,7 +111,7 @@
     </li>
 </ul>
 <div class="sidebar">
-        <button id="logout-btn" class="menu_btn" onclick="logout()">로그아웃</button>
+    <button id="logout-btn" class="menu_btn" onclick="logout()">로그아웃</button>
 </div>
 <div class="warp">
     <div id="card-box" class="row row-cols-1 row-cols-md-4 g-4">
@@ -163,3 +171,5 @@
 </script>
 </body>
 </html>
+
+<!--commit-->
