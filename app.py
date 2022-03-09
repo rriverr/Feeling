@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
-db = client.dbsparta_plus_week4
+db = client.feeling
 
 SECRET_KEY = 'SPARTA'
 
@@ -73,10 +73,8 @@ def check_dup():
 def sign_in():
     userid_receive = request.form['userid_give']
     password_receive = request.form['password_give']
-
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     result = db.feelingusers.find_one({'userid': userid_receive, 'password': pw_hash})
-
     if result is not None:
         payload = {
             'id': userid_receive,
@@ -131,11 +129,11 @@ def posting():
         return redirect(url_for("home"))
     except (KeyError):
         return jsonify({"msg": "파일 없음"})
-
-@app.route('/upload', methods=['GET'])
-def post_get():
-    post_list = list(db.posts.find({}, {'_id':False}))
-    return jsonify({'posts':post_list})
+#
+# @app.route('/upload', methods=['GET'])
+# def post_get():
+#     post_list = list(db.posts.find({}, {'_id':False}))
+#     return jsonify({'posts':post_list})
 
 @app.route("/get-posts", methods=['GET'])
 def get_posts():
@@ -146,8 +144,7 @@ def get_posts():
         for post in posts:
             post["_id"] = str(post["_id"])
             post["count_heart"] = db.likes.count_documents({"post_id": post["_id"], "type": "heart"})  # 좋아요
-            post["heart_by_me"] = bool(
-                db.likes.find_one({"post_id": post["_id"], "type": "heart", "userid": payload['id']}))
+            post["heart_by_me"] = bool(db.likes.find_one({"post_id": post["_id"], "type": "heart", "userid": payload['id']}))
         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts": posts})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
@@ -164,7 +161,7 @@ def update_like():
         action_receive = request.form["action_give"]
         doc = {
             "post_id": post_id_receive,
-            "userid": user_info["userid"],
+            "userid": user_info['userid'],
             "type": type_receive
         }
         if action_receive == "like":
@@ -173,7 +170,6 @@ def update_like():
             db.likes.delete_one(doc)
         count = db.likes.count_documents({"post_id": post_id_receive, "type": type_receive})
         return jsonify({"result": "success", 'msg': 'updated', "count": count})
-
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 

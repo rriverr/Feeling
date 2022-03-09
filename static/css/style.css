@@ -3,11 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@900&family=Single+Day&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&display=swap');
 
-body {
-    color: #333333;
-    background-color: #333333;
-}
-
 input[id="menuicon"] {
     display: none;
 }
@@ -124,8 +119,7 @@ input[id="menuicon"]:checked + ul + div {
     right: 0;
 }
 
-/*--------------------------------------*/
-
+/*-----------------------------------*/
 #modal-upload.modal-overlay {
     width: 100%;
     height: 100%;
@@ -191,7 +185,7 @@ input[id="menuicon"]:checked + ul + div {
     display: block;
     width: 200px;
     padding: 1px 6px 1px 6px;
-    margin: 10px auto auto;
+    margin: 20px auto auto;
     background-color: #688BDF;
     color: white;
     border: none;
@@ -211,9 +205,8 @@ body {
 }
 
 .warp {
-    width: 100%;
+    margin: 100px;
 }
-
 
 .menu_btn {
     background-color: transparent;
@@ -293,6 +286,10 @@ body {
     margin-left: 1000px;
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
 .card-footer {
     background-color: white;
 }
@@ -320,43 +317,18 @@ body {
     margin-top: 30px;
 }
 
-#card-box {
-    width: 80vw;
+/*----------------------*/
 
-    margin: auto;
-    border: 1px solid black;
+.card-header {
+    background-color: white;!important;
+
+    color: #000;
 }
 
-.card {
-    margin: 20px;
-    height: auto;
-    min-width: 200px;
-    max-width: 350px;
-
-    border: 1px solid red;
+.level-item {
+    color: black;
 }
 
-.card-profile {
-    width: 100%;
-    border: 1px solid black;
+.is-sparta {
+    color: #e8344e !important;
 }
-
-.card-image {
-    width: 100%;
-    border: 1px solid black;
-
-    overflow:hidden;
-    margin: 0 auto;
-}
-
-.upload_image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.card-text {
-    width: 100%;
-    border: 1px solid black;
-}
-
