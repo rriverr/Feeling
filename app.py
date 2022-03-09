@@ -4,12 +4,15 @@ from datetime import datetime
 import datetime
 import jwt
 import hashlib
+import certifi
+
+ca = certifi.where()
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
 from pymongo import MongoClient
 
-client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.dbsparta_plus_week4
 
 SECRET_KEY = 'SPARTA'
@@ -174,6 +177,7 @@ def update_like():
 
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
 
 
 if __name__ == '__main__':

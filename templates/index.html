@@ -16,8 +16,65 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
           rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+</html>
     <title>Feeling</title>
+
+
+
+
+
+
+
     <script>
+    function toggle_like(post_id, type) {
+    console.log(post_id, type)
+    let $a_like = $(`#${post_id} a[aria-label='heart']`)
+    let $i_like = $a_like.find("i")
+    if ($i_like.hasClass("fa-heart")) {
+        $.ajax({
+            type: "POST",
+            url: "/update_like",
+            data: {
+                post_id_give: post_id,
+                type_give: type,
+                action_give: "unlike"
+            },
+            success: function (response) {
+                console.log("unlike")
+                $i_like.addClass("fa-heart-o").removeClass("fa-heart")
+                $a_like.find("span.like-num").text(response["count"])
+            }
+        })
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/update_like",
+            data: {
+                post_id_give: post_id,
+                type_give: type,
+                action_give: "like"
+            },
+            success: function (response) {
+                console.log("like")
+                $i_like.addClass("fa-heart").removeClass("fa-heart-o")
+                $a_like.find("span.like-num").text(response["count"])
+            }
+        })
+
+    }
+}
+
+
+
+
+
+
+
         $(document).ready(function () {
             listing();
         });
@@ -32,20 +89,28 @@
                     let rows = response["posts"];
                     for (let i = 0; i < rows.length; i++) {
                         let userid = rows[i]["userid"];
+
                         let profile_name = rows[i]["profile_name"];
                         let ytburl = rows[i]["ytburl"];
                         let file = rows[i]["file"];
-                        let temp_html = `<div className="col">
+                        let temp_html = `
+                                            <div className="col">
                                             <div className="card h-100">
+
                                                 <img src="static/img/${file}"
                                                      class="card-img-top" alt="...">
                                                     <div class="card-footer">
+
                                                         <a href="${ytburl}">
                                                             <small class="text-muted">${ytburl}</small>
                                                         </a>
                                                     </div>
+                                                </div>
                                             </div>
-                                        </div>`;
+                                         </div>
+`;
+
+
 
                         $("#card-box").append(temp_html);
                     }
@@ -78,9 +143,13 @@
             window.location.href = '/';
         }
 
+
+
+
     </script>
 </head>
 <body>
+
 <nav class="nav1">
     <div class="container-fluid">
         <a href="http://211.111.21.123:5000/" onclick="window.location.reload()">
@@ -115,7 +184,12 @@
 </div>
 <div class="warp">
     <div id="card-box" class="row row-cols-1 row-cols-md-4 g-4">
+
+
     </div>
+
+</div>
+
 </div>
 
 <div id="modal-upload" class="modal-overlay">
@@ -136,6 +210,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 <script>
 
     const modal1 = document.getElementById("modal-upload")
@@ -169,6 +248,9 @@
         //업로드한 이미지의 URL을 reader에 등록
     })
 </script>
+
+<script src="https://kit.fontawesome.com/b4faba97d1.js" crossorigin="anonymous"></script>
+
 </body>
 </html>
 
