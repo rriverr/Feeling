@@ -19,8 +19,6 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
-SECRET_KEY = 'SPARTA'
-
 
 ##  HTML ##
 
@@ -35,25 +33,6 @@ def home():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
-
-# @app.route('/upload', methods=['POST'])
-# def save_diary():
-#     ytburl_receive = request.form['ytburl_give']
-#     file = request.files["file_give"]
-#     extension = file.filename.split('.')[-1]
-#     today = datetime.now()
-#     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-#     filename = f'file-{mytime}'
-#     save_to = f'static/img/{filename}.{extension}'
-#     file.save(save_to)
-#
-#     doc = {
-#         'ytburl': ytburl_receive,
-#         'img': f'{filename}.{extension}',
-#     }
-#     db.upload.insert_one(doc)
-#     return jsonify({'msg': '저장 완료!'})
 
 
 @app.route('/login')
@@ -137,7 +116,7 @@ def posting():
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
         extension = file.filename.split('.')[-1]
         filename = f'file-{mytime}'
-        save_to = f'static/{filename}.{extension}'
+        save_to = f'static/img/{filename}.{extension}'
         file.save(save_to)
         doc = {
             "userid": user_info["userid"],
@@ -151,6 +130,10 @@ def posting():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+@app.route('/upload', methods=['GET'])
+def post_get():
+    post_list = list(db.posts.find({}, {'_id':False}))
+    return jsonify({'posts':post_list})
 
 @app.route("/get-posts", methods=['GET'])
 def get_posts():
