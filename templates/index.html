@@ -132,7 +132,14 @@
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: window.location.reload()
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        window.location.reload()
+                        alert(response['msg'])
+                    } else {
+                        alert(response['msg'])
+                    }
+                }
             });
         }
 
@@ -201,7 +208,7 @@
             <div class="imput">
                 <p class="title02">YOUTUBE URL</p><input class="inputurl" type="text" id="ytburl">
                 <img class="setimg"
-                     src="/static/noimg.jpg"
+                     src="/static/img/noimg.jpg"
                      id="img_section">
                 <br>
                 <input type="file" id="upload_file" accept="image/*" required=true value="업로드">
@@ -253,5 +260,3 @@
 
 </body>
 </html>
-
-<!--commit-->
