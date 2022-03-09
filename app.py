@@ -37,23 +37,23 @@ def home():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-@app.route('/upload', methods=['POST'])
-def save_diary():
-    ytburl_receive = request.form['ytburl_give']
-    file = request.files["file_give"]
-    extension = file.filename.split('.')[-1]
-    today = datetime.now()
-    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-    filename = f'file-{mytime}'
-    save_to = f'static/img/{filename}.{extension}'
-    file.save(save_to)
-
-    doc = {
-        'ytburl': ytburl_receive,
-        'img': f'{filename}.{extension}',
-    }
-    db.upload.insert_one(doc)
-    return jsonify({'msg': '저장 완료!'})
+# @app.route('/upload', methods=['POST'])
+# def save_diary():
+#     ytburl_receive = request.form['ytburl_give']
+#     file = request.files["file_give"]
+#     extension = file.filename.split('.')[-1]
+#     today = datetime.now()
+#     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+#     filename = f'file-{mytime}'
+#     save_to = f'static/img/{filename}.{extension}'
+#     file.save(save_to)
+#
+#     doc = {
+#         'ytburl': ytburl_receive,
+#         'img': f'{filename}.{extension}',
+#     }
+#     db.upload.insert_one(doc)
+#     return jsonify({'msg': '저장 완료!'})
 
 
 @app.route('/login')
@@ -124,14 +124,14 @@ def user(userid):
         return redirect(url_for("home"))
 
 
-@app.route('/posting', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 def posting():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.feelingusers.find_one({"userid": payload["id"]})
         ytburl_receive = request.form["ytburl_give"]
-        date_receive = request.form["date_give"]
+        date_receive = request.form.get('date_give', False)
         file = request.files["file_give"]
         today = datetime.now()
         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')

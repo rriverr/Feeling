@@ -18,34 +18,34 @@
           rel="stylesheet"/>
     <title>Feeling</title>
     <script>
-        $(document).ready(function () {
-            listing();
-        });
+        // $(document).ready(function () {
+        //     listing();
+        // });
 
-        function listing() {
-            $.ajax({
-                type: "GET",
-                url: "/upload",
-                data: {},
-                success: function (response) {
-                    let rows = response["upload"];
-                    for (let i = 0; i < rows.length; i++) {
-                        let file = rows[i]["file"];
-                        let title = rows[i]["ytburl"];
-                        let temp_html = ` <div class="col">
-                                            <div class="card h-100">
-                                                <img src="${file}"
-                                                     class="card-img-top" alt="...">
-                                                <div class="card-footer">
-                                                    <small class="text-muted">${title}</small>
-                                                </div>
-                                            </div>
-                                        </div>`;
-                        $("#list_box").append(temp_html);
-                    }
-                },
-            });
-        }
+        // function listing() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "/get-posts",
+        //         data: {},
+        //         success: function (response) {
+        //             let rows = response["upload"];
+        //             for (let i = 0; i < rows.length; i++) {
+        //                 let file = rows[i]["file"];
+        //                 let title = rows[i]["ytburl"];
+        //                 let temp_html = ` <div class="col">
+        //                                     <div class="card h-100">
+        //                                         <img src="${file}"
+        //                                              class="card-img-top" alt="...">
+        //                                         <div class="card-footer">
+        //                                             <small class="text-muted">${title}</small>
+        //                                         </div>
+        //                                     </div>
+        //                                 </div>`;
+        //                 $("#list_box").append(temp_html);
+        //             }
+        //         },
+        //     });
+        // }
 
         function posting() {
             let ytbrul = $('#ytburl').val()
