@@ -271,7 +271,7 @@ body {
     border: none;
     border-radius: 2px;
 
-    background-color: #688BDF;
+    background-color: #977FD7;
 
     color: white;
 }
@@ -279,7 +279,7 @@ body {
 .checkdup-btn {
     width: 80px;
 
-    background-color: #688BDF;
+    background-color: #977FD7;
     color: white;
 
     border: none;
@@ -313,11 +313,11 @@ body {
 }
 
 .is-safe {
-    color: #688BDF;
+    color: #977FD7;
 }
 
 .is-success {
-    color: #688BDF;
+    color: #977FD7;
 }
 
 .is-hidden {

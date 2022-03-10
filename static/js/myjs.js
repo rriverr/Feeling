@@ -57,6 +57,7 @@ function listing() {
                     let ytburl = rows[i]["ytburl"]
                     let ytbcode = rows[i]["ytbcode"]
                     let comment = rows[i]["comment"]
+                    let feel = rows[i]["feel"]
                     let file = rows[i]["file"]
                     let time_post = new Date(post["date"])
                     let time_before = time2str(time_post)
@@ -64,11 +65,12 @@ function listing() {
                     let count_heart = post['count_heart']
                     let temp_html = `<div class="post-box" id="${post["_id"]}">
                                                 <div class="post-header">
-                                                    <p class="post-profile">${profile_name}</p>
+                                                    <p class="post-profile">@${profile_name}</p>
                                                     <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('${post['_id']}', 'heart')">
                                                         <span class="icon is-small"><i class="fa ${class_heart}" aria-hidden="true"></i></span>
                                                         <span class="like-num">${num2str(count_heart)}</span>
                                                     </a>
+                                                    <p class="post-feel">${feel}</p>
                                                 </div>
                                                 <div class="post-body">
                                                     <img class="post-image" src="static/img/${file}" alt="">
@@ -95,10 +97,12 @@ function posting() {
     let ytbrul = $('#ytburl').val()
     let comment = $('#comment').val()
     let file = $('#upload_file')[0].files[0]
+    let feel = $('[name=feelbtn1]:checked').val();
     let form_data = new FormData()
     form_data.append("file_give", file)
     form_data.append("ytburl_give", ytbrul)
     form_data.append("comment_give", comment)
+    form_data.append("feel_give", feel)
     $.ajax({
         type: "POST",
         url: "/upload",

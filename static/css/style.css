@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap');
 
 
-
 /*----------------------------------*/
 /*모달*/
 
@@ -25,7 +24,7 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     width: 400px;
-    height: 650px;
+    height: 680px;
     position: fixed;
     top: -100px;
     padding: 10px;
@@ -93,6 +92,25 @@
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 13px;
     margin: auto 14px auto;
+}
+
+.feelbtn {
+    margin: auto;
+    width: 350px;
+    font-size: 0.9em;
+    text-align: left;
+}
+
+.post-feel {
+    padding-right: 5px;
+
+    position: absolute;
+    right: 0;
+
+    font-size: 0.8em;
+    font-weight: 500;
+
+    color: #fff
 }
 
 /*----------------------------------*/
@@ -264,6 +282,8 @@ a:visited {
 }
 
 .bg-right-box {
+    min-width: 760px;
+
     margin-top: 50px;
     padding-left: 20px;
 
@@ -310,10 +330,14 @@ a:visited {
     font-size: 1.2em;
     font-weight: 500;
     color: #000;
+
+    position: relative;
 }
 
 .post-profile {
     color: white;
+    font-size: 0.9em;
+    font-weight: 600;
 }
 
 .post-body {

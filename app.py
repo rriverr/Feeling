@@ -4,8 +4,6 @@ from datetime import datetime
 import datetime
 import jwt
 import hashlib
-
-
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
@@ -114,7 +112,7 @@ def posting():
             "ytburl": ytburl_receive,
             "ytbcode": ytbcode,
             "comment": comment_receive,
-            "feel" : feel_recive,
+            "feel": feel_recive,
             'file': f'{filename}.{extension}',
             "date": date_receive
         }
@@ -132,7 +130,7 @@ def get_posts():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        posts = list(db.posts.find({}).sort("date", -1).limit(20))
+        posts = list(db.posts.find({}).sort("_id", -1).limit(20))
         for post in posts:
             post["_id"] = str(post["_id"])
             post["count_heart"] = db.likes.count_documents({"post_id": post["_id"], "type": "heart"})  # 좋아요
