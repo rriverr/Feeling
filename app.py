@@ -108,6 +108,7 @@ def posting():
         user_info = db.feelingusers.find_one({"userid": payload["id"]})
         ytburl_receive = request.form["ytburl_give"]
         ytbcode = ytburl_receive[-11:]
+        comment_receive = request.form["comment_give"]
         date_receive = request.form.get('date_give', False)
         file = request.files["file_give"]
         today = datetime.now()
@@ -121,6 +122,7 @@ def posting():
             "profile_name": user_info["profile_name"],
             "ytburl": ytburl_receive,
             "ytbcode": ytbcode,
+            "comment": comment_receive,
             'file': f'{filename}.{extension}',
             "date": date_receive
         }

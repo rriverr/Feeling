@@ -19,12 +19,12 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     width: 400px;
-    height: 500px;
+    height: 650px;
     position: fixed;
     top: -100px;
     padding: 10px;
-    margin-top: 176px;
-    z-index: 100;
+    margin-top: 200px;
+    z-index: 10000;
 }
 
 #modal-upload .title01 {
@@ -45,6 +45,14 @@
     margin: auto auto 14px;
     width: 350px;
     height: 25px;
+}
+
+#comment {
+    display: flex;
+    position: center;
+    margin: auto auto 14px;
+    width: 350px;
+    height: 100px;
 }
 
 .setimg {
@@ -217,7 +225,7 @@ html {
 
 .post-box {
     width: 330px;
-    border: 2px solid #977FD7;
+    border: 2px dotted #977FD7;
     border-radius: 10px;
 }
 
