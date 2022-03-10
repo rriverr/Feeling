@@ -19,7 +19,7 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     width: 400px;
-    height: 650px;
+    height: 680px;
     position: fixed;
     top: -100px;
     padding: 10px;
@@ -84,6 +84,16 @@
     font-size: 13px;
     margin: auto 14px auto;
 }
+
+.feelbtn{
+    margin: auto;
+    width: 350px;
+    font-size: 0.9em;
+    text-align: left;
+
+}
+
+.post-feel
 
 /*--------------------------------------*/
 
@@ -292,4 +302,8 @@ html {
     padding-left: 10px;
     font-size: 0.9em;
     text-align: justify;
+}
+
+.post-feel{
+   padding-left: 40px;
 }

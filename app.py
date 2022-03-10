@@ -109,6 +109,7 @@ def posting():
         ytburl_receive = request.form["ytburl_give"]
         ytbcode = ytburl_receive[-11:]
         comment_receive = request.form["comment_give"]
+        feel_recive = request.form['feel_give']
         date_receive = request.form.get('date_give', False)
         file = request.files["file_give"]
         today = datetime.now()
@@ -123,6 +124,7 @@ def posting():
             "ytburl": ytburl_receive,
             "ytbcode": ytbcode,
             "comment": comment_receive,
+            "feel" : feel_recive,
             'file': f'{filename}.{extension}',
             "date": date_receive
         }
