@@ -4,12 +4,16 @@ from datetime import datetime
 import datetime
 import jwt
 import hashlib
+import certifi
+
+ca = certifi.where()
+
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
 from pymongo import MongoClient
 
-client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.feeling
 
 SECRET_KEY = 'SPARTA'
