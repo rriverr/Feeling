@@ -9,10 +9,10 @@ from datetime import datetime, timedelta
 
 from pymongo import MongoClient
 
-client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Cluster0?retryWrites=true&w=majority')
-db = client.feeling
+client = MongoClient('')
+db = 
 
-SECRET_KEY = 'SPARTA'
+SECRET_KEY = 
 
 app = Flask(__name__)
 
