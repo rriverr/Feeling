@@ -22,6 +22,7 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 ##  HTML ##
 
+# 토큰 없을 경우 login페이지로 리다이렉트. 토큰 있을 경우 index 렌더링.
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
@@ -45,7 +46,7 @@ def login():
 def sigh_up():
     return render_template('index.html')
 
-
+# 회원가입 받은 정보 저장
 @app.route('/sign-up/save', methods=['POST'])
 def sign_up():
     userid_receive = request.form['userid_give']
@@ -59,16 +60,14 @@ def sign_up():
     db.feelingusers.insert_one(doc)
     return render_template('login.html')
 
-
+# 회원가입 아이디 중복체크
 @app.route('/sign-up/check-dup', methods=['POST'])
 def check_dup():
-
-
     userid_receive = request.form['userid_give']
     exists = bool(db.feelingusers.find_one({"userid": userid_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-
+# 로그인 입력값 검사
 @app.route('/sign-in', methods=['POST'])
 def sign_in():
     userid_receive = request.form['userid_give']
@@ -82,25 +81,25 @@ def sign_in():
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
-        return jsonify({'result': 'success', 'token': token, 'msg':'환영합니다!'})
+        return jsonify({'result': 'success', 'token': token, 'msg':'님, 환영합니다!'})
             # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
-@app.route('/user/<userid>')
-def user(userid):
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        status = (userid == payload["id"])
+# @app.route('/user/<userid>')
+# def user(userid):
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         status = (userid == payload["id"])
+#
+#         user_info = db.feelingusers.find_one({"userid": userid}, {"_id": False})
+#         return render_template('user.html', user_info=user_info, status=status)
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return redirect(url_for("home"))
 
-        user_info = db.feelingusers.find_one({"userid": userid}, {"_id": False})
-        return render_template('user.html', user_info=user_info, status=status)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
-
-
+# 작성글 db에 저장
 @app.route('/upload', methods=['POST'])
 def posting():
     token_receive = request.cookies.get('mytoken')
@@ -119,22 +118,26 @@ def posting():
         doc = {
             "userid": user_info["userid"],
             "profile_name": user_info["profile_name"],
-            "ytburl": ytburl_receive,  # 노래url
+            "ytburl": ytburl_receive,
             'file': f'{filename}.{extension}',
             "date": date_receive
         }
         db.posts.insert_one(doc)
-        return jsonify({"result": "success", 'msg': '포스팅 성공'})
+        return jsonify({"result": "success", 'msg': '등록되었습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
     except (KeyError):
-        return jsonify({"msg": "파일 없음"})
-#
+        return jsonify({"msg": "파일을 등록해주세요!"})
+
+
+
 # @app.route('/upload', methods=['GET'])
 # def post_get():
 #     post_list = list(db.posts.find({}, {'_id':False}))
 #     return jsonify({'posts':post_list})
 
+
+# 작성글, 좋아요 get (post, user id, like)
 @app.route("/get-posts", methods=['GET'])
 def get_posts():
     token_receive = request.cookies.get('mytoken')
@@ -149,7 +152,7 @@ def get_posts():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-
+# 좋아요 값 type(like/unlike)에 따라 db에 저장/삭제
 @app.route('/update-like', methods=['POST'])
 def update_like():
     token_receive = request.cookies.get('mytoken')

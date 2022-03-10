@@ -26,6 +26,8 @@
             listing();
         });
 
+
+        // 좋아요 post
         function toggle_like(post_id, type) {
             console.log(post_id, type)
             let $a_like = $(`#${post_id} a[aria-label='heart']`)
@@ -64,6 +66,7 @@
             }
         }
 
+        // 글, 좋아요 get
         function listing() {
             $("#card-box").empty()
             $.ajax({
@@ -91,7 +94,7 @@
                                                         <span class="like-num">${num2str(count_heart)}</span>
                                                     </a>
                                                 </div>
-                                                <img src="static/img/noimg.jpg"
+                                                <img src="static/img/${file}"
                                                      class="card-img-top" alt="...">
                                                 <div class="card-footer">
                                                     <a href="${ytburl}">
@@ -107,6 +110,7 @@
             })
         }
 
+        // 포스팅.파일 업로드
         function posting() {
             let ytbrul = $('#ytburl').val()
             let file = $('#upload_file')[0].files[0]
@@ -123,7 +127,6 @@
                 success: function (response) {
                     if (response['result'] == 'success') {
                         window.location.reload()
-                        alert(response['msg'])
                     } else {
                         alert(response['msg'])
                     }
@@ -131,12 +134,13 @@
             });
         }
 
+        // 로그아웃
         function logout() {
             $.removeCookie('mytoken', {path: '/'});
             window.location.href = '/';
         }
 
-        // 좋아요 숫자 변환
+        // 좋아요 숫자 표시 변환
         function num2str(count) {
             if (count > 10000) {
                 return parseInt(count / 1000) + "k"
@@ -150,6 +154,7 @@
             return count
         }
 
+        // 시간 표시 변환
         function time2str(date) {
             let today = new Date()
             let time = (today - date) / 1000 / 60  // 분
@@ -167,6 +172,7 @@
             }
             return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
         }
+
     </script>
 </head>
 <body>
