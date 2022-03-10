@@ -185,6 +185,12 @@ def update_like():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-
+@app.route('/api/delete_posts', methods=['POST'])
+def delete_review():
+    receive_file = request.form['give_file']
+    print(receive_file)
+    db.posts.delete_one({'file': receive_file})
+    # 리뷰 삭제하기
+    return jsonify({'result': 'success', 'msg': '삭제 완료'})
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
