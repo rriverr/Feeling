@@ -27,6 +27,5 @@ View : HTML5 / CSS3 / Javascript / JQuery 3.5.1
 
 
 ## 💻 데모영상
-
-
+https://youtu.be/hgdBLs7u0eU
 
