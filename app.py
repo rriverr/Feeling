@@ -89,18 +89,6 @@ def sign_in():
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
-# @app.route('/user/<userid>')
-# def user(userid):
-#     token_receive = request.cookies.get('mytoken')
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         status = (userid == payload["id"])
-#
-#         user_info = db.feelingusers.find_one({"userid": userid}, {"_id": False})
-#         return render_template('user.html', user_info=user_info, status=status)
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
-
 # 작성글 db에 저장
 @app.route('/upload', methods=['POST'])
 def posting():
@@ -136,13 +124,6 @@ def posting():
         return redirect(url_for("home"))
     except (KeyError):
         return jsonify({"msg": "파일을 등록해주세요!"})
-
-
-
-# @app.route('/upload', methods=['GET'])
-# def post_get():
-#     post_list = list(db.posts.find({}, {'_id':False}))
-#     return jsonify({'posts':post_list})
 
 
 # 작성글, 좋아요 get (post, user id, like)

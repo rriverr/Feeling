@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap');
+
+
+
+/*----------------------------------*/
+/*모달*/
 
 #modal-upload.modal-overlay {
     width: 100%;
@@ -19,7 +25,7 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     width: 400px;
-    height: 680px;
+    height: 650px;
     position: fixed;
     top: -100px;
     padding: 10px;
@@ -35,7 +41,7 @@
 
 #modal-upload {
     margin-top: 20px;
-    padding: 0px 10px;
+    padding: 0 10px;
     color: black;
 }
 
@@ -72,9 +78,13 @@
 .uploadbtn {
     display: block;
     width: 200px;
+    height: 40px;
+    letter-spacing: 2px;
+
+    border-radius: 20px;
     padding: 1px 6px 1px 6px;
     margin: 20px auto auto;
-    background-color: #688BDF;
+    background-color: #977FD7;
     color: white;
     border: none;
 }
@@ -85,44 +95,8 @@
     margin: auto 14px auto;
 }
 
-.feelbtn{
-    margin: auto;
-    width: 350px;
-    font-size: 0.9em;
-    text-align: left;
-
-}
-
-.post-feel
-
-/*--------------------------------------*/
-
-html {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 14px;
-}
-
-
-#bg-box {
-    padding-top: 80px;
-    width: 100%;
-    height: 500px;
-
-    text-align: center;
-
-    background-image: linear-gradient(0deg, rgba(255, 255, 255, 100), rgba(0, 0, 0, 0)), url("/static/sky.jpeg");
-}
-
-#main-logo {
-    margin: auto;
-}
-
-
-.btn-box {
-    padding-right: 100px;
-}
-
 /*----------------------------------*/
+/*작성,로그아웃 버튼*/
 
 #btn-logout, #btn-modal {
     width: 200px;
@@ -137,7 +111,6 @@ html {
 }
 
 #btn-logout, #btn-modal {
-    font-family: "proxima-nova", sans-serif;
     font-weight: 700;
     font-size: 13px;
     text-transform: uppercase !important;
@@ -164,7 +137,7 @@ html {
 
 #btn-logout::before, #btn-modal::before {
     content: '';
-    width: 0%;
+    width: 0;
     height: 100%;
     display: block;
     background: #977FD7;
@@ -185,7 +158,7 @@ html {
 
 #btn-logout::after, #btn-modal::after {
     content: '';
-    width: 0%;
+    width: 0;
     height: 100%;
     display: block;
     background: #A9E9F5;
@@ -221,14 +194,99 @@ html {
 
 /*----------------------------------*/
 
+html {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+}
+
+body {
+    padding-bottom: 200px;
+    position: relative;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+
+#bg-box {
+    margin: 50px 0 50px 0;
+
+    width: 100%;
+    height: 500px;
+
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.bg-left-box {
+    display: flex;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    height: 300px;
+
+    background-image: url("/static/background.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#main-logo {
+    margin: auto;
+}
+
+.btn-box {
+    margin-top: 30px;
+}
+
+.bg-btn {
+    margin-right: 5px;
+}
+
+.bg-right-box {
+    margin-top: 50px;
+    padding-left: 20px;
+
+    text-align: left;
+}
+
+.title {
+    font-family: 'Noto Serif KR', serif;
+    color: #977FD7;
+}
+
+.main-title-text {
+    font-weight: 600;
+    font-size: 3em;
+    text-decoration: #A9E9F5 wavy underline;
+}
 
 .post-wrap {
-    margin: auto;
-    margin-bottom: 100px;
-
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-row-gap: 100px;
+
+    margin: auto;
 
     width: 1600px;
     text-align: center;
@@ -236,14 +294,15 @@ html {
 
 .post-box {
     width: 330px;
-    border: 2px dotted #977FD7;
+    background-color: #c8bce6;
+    color: white;
     border-radius: 10px;
 }
 
 .post-header {
     display: flex;
 
-    padding: 5px 0 0 10px;
+    padding: 7px 0 0 15px;
 
     width: 320px;
     height: 40px;
@@ -251,7 +310,10 @@ html {
     font-size: 1.2em;
     font-weight: 500;
     color: #000;
+}
 
+.post-profile {
+    color: white;
 }
 
 .post-body {
@@ -260,7 +322,6 @@ html {
 
     overflow: hidden;
     margin: 0 auto;
-
 }
 
 .post-image {
@@ -268,7 +329,6 @@ html {
     height: 100%;
 
     object-fit: cover;
-
 }
 
 .post-footer {
@@ -281,7 +341,6 @@ html {
 
     word-break: break-all;
 }
-
 
 .level-item {
     color: black;
@@ -304,6 +363,24 @@ html {
     text-align: justify;
 }
 
-.post-feel{
-   padding-left: 40px;
+
+hr {
+    border-top: 1px solid #7A7A7A;
+}
+
+#footer {
+    width: 100%;
+    height: 80px;
+
+    align-items: center;
+    text-align: center;
+    line-height: 5px;
+    color: #7A7A7A;
+
+    position: absolute;
+    bottom: 0;
+}
+
+#footer > p {
+    font-size: 0.8em;
 }
