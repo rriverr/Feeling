@@ -80,6 +80,7 @@
                             let post = rows[i]
                             let profile_name = rows[i]["profile_name"]
                             let ytburl = rows[i]["ytburl"]
+                            let comment = rows[i]["comment"]
                             let file = rows[i]["file"]
                             let time_post = new Date(post["date"])
                             let time_before = time2str(time_post)
@@ -100,6 +101,8 @@
                                                     <a href="${ytburl}">
                                                         <small class="text-muted">🎵${ytburl}</small>
                                                     </a>
+                                                    <!--   코멘트  -->
+                                                     <label for="post-comment">${comment}</label>
                                                      <button onclick="delete_posts('${file}')" type="button" class="btn btn-dark">삭제
                                                 </div>
                                             </div>
@@ -114,10 +117,12 @@
         // 포스팅.파일 업로드
         function posting() {
             let ytbrul = $('#ytburl').val()
+            let comment = $('#comment').val()
             let file = $('#upload_file')[0].files[0]
             let form_data = new FormData()
             form_data.append("file_give", file)
             form_data.append("ytburl_give", ytbrul)
+            form_data.append("comment_give", comment)
             $.ajax({
                 type: "POST",
                 url: "/upload",
@@ -173,6 +178,7 @@
             }
             return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
         }
+
         function delete_posts(file) {
             $.ajax({
                 type: "POST",
@@ -235,6 +241,7 @@
         <div class="upload">
             <div class="imput">
                 <p class="title02">YOUTUBE URL</p><input class="inputurl" type="text" id="ytburl">
+                <p class="title02">comment</p><input class="inputurl" type="text" id="comment">
                 <img class="setimg"
                      src="/static/img/noimg.jpg"
                      id="img_section">
